@@ -1,0 +1,89 @@
+﻿@using FirstAzzureWebApp.Models
+@model FirstAzzureWebApp.Models.Customers
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngMask/3.1.1/ngMask.min.js"></script>
+
+<script>
+    var app = angular.module('MyApp', ['ngMask'])
+    app.controller('MyController', function ($scope, $http, $window) {
+        
+        $scope.ButtonClick = function () {
+            console.log($scope.reqPhoneNumber);
+            $scope.Results = false;
+            $scope.NoResults = false;
+            var post = $http({
+                method: "POST",
+                url: "/Ajax/getCustomerByPhone",
+                dataType: 'json',
+                data: { phoneNumber: $scope.reqPhoneNumber },
+                headers: { "Content-Type": "application/json" }
+            });
+
+            post.success(function (data, status) {
+                if (data == "NA") {
+                    $scope.NoResults = true;
+                } else {
+                    $scope.firstName = data.FirstName;
+                    $scope.lastName = data.LastName;
+                    $scope.phoneNumber = data.phoneNumber;
+                    $scope.email = data.email;
+                    $scope.Results = true;
+                }
+               
+                //$window.alert("Hello: " + data.FirstName + " " + data.LastName);
+            });
+
+            post.error(function (data, status) {
+                $scope.NoResults = true;
+            });
+        }
+    });
+</script>
+<div ng-app="MyApp" ng-controller="MyController" ng-cloak>
+    <div class="jumbotron">
+        <h3>Enter Customer Phone Number:</h3>
+        <p class="lead"><input type="text" ng-model="reqPhoneNumber" mask='999-999-9999'/></p>
+        <p><a class="btn btn-primary btn-lg" ng-click="ButtonClick()">Submit &raquo;</a></p>
+    </div>
+    <div class="loader"></div>
+    <div class="row">
+        <div class="panel panel-default col-md-4 col-md-offset-4" ng-show="Results">
+            <div class="panel-body" >
+                <table class="table table-bordered table-condensed f11">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" align="center" class="success"><b>Customer Information:</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>FirstName</b></td>
+                            <td><p ng-bind="firstName"></p></td>
+                        </tr>
+                        <tr>
+                            <td><b>LastName</b></td>
+                            <td><p ng-bind="lastName"></p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Phone Number</b></td>
+                            <td><p ng-bind="phoneNumber"></p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Email</b></td>
+                            <td><p ng-bind="email"></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-default col-md-8 col-md-offset-2" ng-show="NoResults">
+            <div class="panel-body">
+                <h2>Sorry!</h2>
+                <h4>No Customer Data Found with phone# {{reqPhoneNumber}}.</h4>
+            </div>
+        </div>
+    </div>
+</div>
