@@ -25,11 +25,11 @@ namespace FirstAzzureWebApp.Controllers
                     email = CustomerData.ElementAt(0).email
                     
                 };
-                return Json(customer);
+                return Json(customer, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json("NA");
+                return Json("NA", JsonRequestBehavior.AllowGet);
             }
             
         }

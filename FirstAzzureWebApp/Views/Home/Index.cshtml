@@ -4,45 +4,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ngMask/3.1.1/ngMask.min.js"></script>
 
-<script>
-    var app = angular.module('MyApp', ['ngMask'])
-    app.controller('MyController', function ($scope, $http, $window) {
-        
-        $scope.ButtonClick = function () {
-            console.log($scope.reqPhoneNumber);
-            $scope.Results = false;
-            $scope.NoResults = false;
-            var post = $http({
-                method: "POST",
-                url: "/Ajax/getCustomerByPhone",
-                dataType: 'json',
-                data: { phoneNumber: $scope.reqPhoneNumber },
-                headers: { "Content-Type": "application/json" }
-            });
-
-            post.success(function (data, status) {
-                if (data == "NA") {
-                    $scope.NoResults = true;
-                } else {
-                    $scope.firstName = data.FirstName;
-                    $scope.lastName = data.LastName;
-                    $scope.phoneNumber = data.phoneNumber;
-                    $scope.email = data.email;
-                    $scope.Results = true;
-                }
-               
-                //$window.alert("Hello: " + data.FirstName + " " + data.LastName);
-            });
-
-            post.error(function (data, status) {
-                $scope.NoResults = true;
-            });
-        }
-    });
-</script>
 <div ng-app="MyApp" ng-controller="MyController" ng-cloak>
     <div class="jumbotron">
         <h3>Enter Customer Phone Number:</h3>
@@ -87,3 +49,6 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+<script type="text/javascript" src="~/Scripts/ngMask.min.js"></script>
+<script type="text/javascript" src="~/Scripts/Controllers/controller.js"></script>

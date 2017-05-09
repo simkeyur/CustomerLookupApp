@@ -157,7 +157,7 @@
       <DependentUpon>Database.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Views\Controllers\controller.js" />
+    <Content Include="Scripts\Controllers\controller.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
